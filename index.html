@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>English words</title>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./fonts.css">
+  <link rel="stylesheet" href="./variables.css">
+</head>
+
+<body>
+  <header class="header">
+    <div class="wrapper-tabs">
+      <div data-section='training' class="wrapper-tabs__tab">
+        <img src="assets/training.png" alt="">
+      </div>
+      <div data-section='vocabulary' class="wrapper-tabs__tab active">
+        <img src="assets/vocabulary.png" alt="">
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="overlay">
+      <div class="modal-with-text">
+        <p></p>
+        <div class='button-primary modal-with-text__button'>Got it</div>
+      </div>
+    </div>
+    <div class="training">
+      <h2>Studying new words</h2>
+      <p>There are you have opportunity to learn new words from vocabulary</p>
+      <div class="training__description">
+        <h3>Studying prioritize</h3>
+        <ol>
+          <li>New words</li>
+          <li>Difficult words</li>
+          <li>Words in order from oldest interactions to most recent</li>
+        </ol>
+        <button class='training__start button-primary'>Start</button>
+      </div>
+      <div class="training__new-words">
+
+      </div>
+    </div>
+    <div class="vocabulary active">
+      <div class="vocabulary__new-words">
+        <div class="vocabulary__english-word">
+          <label for="english_word">English word</label>
+          <input type="text" class="english_word" name="english_word">
+        </div>
+        <div class="vocabulary__native-word">
+          <label for="english_word">Translate</label>
+          <input type="text" class="native_word" name="english_word">
+        </div>
+        <button class='vocabulary__add-new-word button-primary' type="submit">Add</button>
+        <button class='clear-local-storage button-primary'>Clear Local Storage</button>
+        <button class='add-several-words button-primary'>Add Five Words</button>
+      </div>
+      <div class="vocabulary__all-words">
+      </div>
+    </div>
+  </main>
+
+  <script src="./script.js"></script>
+  <script src="./robot-voice.js"></script>
+</body>
+
+
+
+
+
+</html>
