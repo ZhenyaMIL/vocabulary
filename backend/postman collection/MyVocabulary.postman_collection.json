@@ -1,0 +1,47 @@
+{
+	"info": {
+		"_postman_id": "8f08e66f-41e6-4e23-986f-50a7fe8471b3",
+		"name": "MyVocabulary",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13755991"
+	},
+	"item": [
+		{
+			"name": "Find all words",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Add new word",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"englishName\": \"Duck\",\r\n    \"russianWord\": \"Утка\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/addNewWord",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"addNewWord"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
