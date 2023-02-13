@@ -1,6 +1,6 @@
 package com.sashazhenia.vocabulary.controller;
 
-import com.sashazhenia.vocabulary.model.WordItem;
+import com.sashazhenia.vocabulary.model.EnglishWord;
 import com.sashazhenia.vocabulary.model.dto.AddNewWordDto;
 import com.sashazhenia.vocabulary.service.WordService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class WordController {
     private final WordService wordService;
 
     @GetMapping(value = "/api/v1/findAllWords")
-    public List<WordItem> findAllWords() {
+    public List<EnglishWord> findAllWords() {
         return wordService.findAllWords();
     }
 

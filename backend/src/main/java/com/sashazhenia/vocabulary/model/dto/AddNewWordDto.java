@@ -1,10 +1,21 @@
 package com.sashazhenia.vocabulary.model.dto;
 
+import com.sashazhenia.vocabulary.model.Language;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.validation.annotation.Validated;
+
+@Validated
 public record AddNewWordDto(
 
-        String englishName,
+        @NotEmpty
+        String englishWord,
 
-        String russianWord
+        @NotEmpty
+        String cyrillicWord,
+
+        @NotNull
+        Language language
 
 ) {
 }
