@@ -1,6 +1,7 @@
 package com.sashazhenia.vocabulary.controller;
 
 import com.sashazhenia.vocabulary.exception.CyrillicSymbolsInEnglishWordException;
+import com.sashazhenia.vocabulary.exception.CyrillicWordAlreadyExistsException;
 import com.sashazhenia.vocabulary.exception.SimpleError;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.core.Ordered;
@@ -20,7 +21,8 @@ public class GlobalExceptionHandler {
             HttpClientErrorException.BadRequest.class,
             MethodArgumentNotValidException.class,
             ConstraintViolationException.class,
-            CyrillicSymbolsInEnglishWordException.class
+            CyrillicSymbolsInEnglishWordException.class,
+            CyrillicWordAlreadyExistsException.class
     })
     public final ResponseEntity<SimpleError> handleBadRequest(Exception ex) {
         return new ResponseEntity<>(SimpleError.builder()

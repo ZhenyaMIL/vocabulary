@@ -1,6 +1,7 @@
 package com.sashazhenia.vocabulary.service;
 
 import com.sashazhenia.vocabulary.exception.CyrillicSymbolsInEnglishWordException;
+import com.sashazhenia.vocabulary.exception.CyrillicWordAlreadyExistsException;
 import com.sashazhenia.vocabulary.model.CyrillicWord;
 import com.sashazhenia.vocabulary.model.EnglishWord;
 import com.sashazhenia.vocabulary.model.WordStatus;
@@ -62,6 +63,10 @@ public class WordService {
     }
 
     private CyrillicWord createNewCyrillicWord(AddNewWordDto addNewWordDto) {
+        if (cyrillicWordRepository.findByName(addNewWordDto.cyrillicWord()) != null) {
+            throw new CyrillicWordAlreadyExistsException(addNewWordDto.englishWord());
+        }
+
         CyrillicWord cyrillicWord = CyrillicWord.builder()
                 .created(LocalDateTime.now())
                 .lastUpdate(LocalDateTime.now())
