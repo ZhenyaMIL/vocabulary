@@ -3,6 +3,7 @@ package com.sashazhenia.vocabulary.controller;
 import com.sashazhenia.vocabulary.model.EnglishWord;
 import com.sashazhenia.vocabulary.model.dto.AddNewWordDto;
 import com.sashazhenia.vocabulary.service.WordService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ public class WordController {
     }
 
     @PostMapping(value = "/api/v1/addNewWord")
-    public void addNewWord(@RequestBody AddNewWordDto addNewWordDto) {
+    public void addNewWord(@RequestBody @Valid AddNewWordDto addNewWordDto) {
         wordService.addNewWord(addNewWordDto);
     }
 

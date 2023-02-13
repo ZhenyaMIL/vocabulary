@@ -5,7 +5,8 @@ import com.sashazhenia.vocabulary.model.CyrillicWord;
 import com.sashazhenia.vocabulary.model.EnglishWord;
 import com.sashazhenia.vocabulary.model.WordStatus;
 import com.sashazhenia.vocabulary.model.dto.AddNewWordDto;
-import com.sashazhenia.vocabulary.repository.WordRepository;
+import com.sashazhenia.vocabulary.repository.CyrillicWordRepository;
+import com.sashazhenia.vocabulary.repository.EnglishWordRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +21,12 @@ public class WordService {
 
     private static final String CYRILLIC_CHECK_REGEXP = ".*\\p{InCyrillic}.*";
 
-    private final WordRepository wordRepository;
+    private final EnglishWordRepository englishWordRepository;
+
+    private final CyrillicWordRepository cyrillicWordRepository;
 
     public List<EnglishWord> findAllWords() {
-        return wordRepository.findAll();
+        return englishWordRepository.findAll();
     }
 
     public void addNewWord(AddNewWordDto addNewWordDto) {
@@ -44,16 +47,18 @@ public class WordService {
                 .rightAnswersCount(0)
                 .build();
 
-        wordRepository.insert(englishWord);
+        englishWordRepository.insert(englishWord);
     }
 
     private CyrillicWord createNewCyrillicWord(AddNewWordDto addNewWordDto) {
-        return CyrillicWord.builder()
+        CyrillicWord cyrillicWord = CyrillicWord.builder()
                 .created(LocalDateTime.now())
                 .lastUpdate(LocalDateTime.now())
                 .name(addNewWordDto.cyrillicWord())
                 .language(addNewWordDto.language())
                 .build();
+
+        return cyrillicWordRepository.insert(cyrillicWord);
     }
 
 }

@@ -19,7 +19,7 @@ public class EnglishWord {
 
         private String englishWord;
 
-        @DocumentReference(lazy = true)
+        @DocumentReference
         private List<CyrillicWord> cyrillicWords;
 
         private LocalDateTime lastUpdate;
