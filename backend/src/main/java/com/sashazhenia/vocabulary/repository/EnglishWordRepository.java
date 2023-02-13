@@ -7,4 +7,6 @@ public interface EnglishWordRepository extends MongoRepository<EnglishWord, Stri
 
     long count();
 
+    EnglishWord findByEnglishWord(String englishWord);
+
 }

@@ -27,7 +27,7 @@ public class WordController {
 
     @PostMapping(value = "/api/v1/addNewWord")
     public void addNewWord(@RequestBody @Valid AddNewWordDto addNewWordDto) {
-        wordService.addNewWord(addNewWordDto);
+        wordService.addNewWordIfNotExists(addNewWordDto);
     }
 
 }

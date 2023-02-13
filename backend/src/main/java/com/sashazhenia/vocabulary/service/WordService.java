@@ -29,25 +29,36 @@ public class WordService {
         return englishWordRepository.findAll();
     }
 
-    public void addNewWord(AddNewWordDto addNewWordDto) {
-        if (Pattern.matches(CYRILLIC_CHECK_REGEXP, addNewWordDto.englishWord())) {
+    public void addNewWordIfNotExists(AddNewWordDto addNewWordDto) {
+        String englishWord = addNewWordDto.englishWord();
+
+        if (Pattern.matches(CYRILLIC_CHECK_REGEXP, englishWord)) {
             throw new CyrillicSymbolsInEnglishWordException();
         }
 
-        List<CyrillicWord> cyrillicWords = new ArrayList<>();
-        cyrillicWords.add(createNewCyrillicWord(addNewWordDto));
+        EnglishWord existedEnglishWord = englishWordRepository.findByEnglishWord(englishWord);
 
-        EnglishWord englishWord = EnglishWord.builder()
-                .cyrillicWords(cyrillicWords)
-                .englishWord(addNewWordDto.englishWord())
-                .status(WordStatus.NEW)
-                .created(LocalDateTime.now())
-                .lastUpdate(LocalDateTime.now())
-                .timesWordAppeared(0)
-                .rightAnswersCount(0)
-                .build();
+        if (existedEnglishWord != null) {
+            List<CyrillicWord> existedCyrillicWords = existedEnglishWord.getCyrillicWords();
+            existedCyrillicWords.add(createNewCyrillicWord(addNewWordDto));
+            englishWordRepository.save(existedEnglishWord);
 
-        englishWordRepository.insert(englishWord);
+        } else {
+            List<CyrillicWord> cyrillicWords = new ArrayList<>();
+            cyrillicWords.add(createNewCyrillicWord(addNewWordDto));
+
+            EnglishWord newEnglishWord = EnglishWord.builder()
+                    .cyrillicWords(cyrillicWords)
+                    .englishWord(addNewWordDto.englishWord())
+                    .status(WordStatus.NEW)
+                    .created(LocalDateTime.now())
+                    .lastUpdate(LocalDateTime.now())
+                    .timesWordAppeared(0)
+                    .rightAnswersCount(0)
+                    .build();
+
+            englishWordRepository.insert(newEnglishWord);
+        }
     }
 
     private CyrillicWord createNewCyrillicWord(AddNewWordDto addNewWordDto) {

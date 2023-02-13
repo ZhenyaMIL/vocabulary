@@ -6,6 +6,8 @@ public enum Language {
 
     EN("en"),
 
+    RU("ru"),
+
     UA("ua");
 
     @Getter
