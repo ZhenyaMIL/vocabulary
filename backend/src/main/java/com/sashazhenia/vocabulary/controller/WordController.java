@@ -1,8 +1,9 @@
 package com.sashazhenia.vocabulary.controller;
 
-import com.sashazhenia.vocabulary.model.WordItem;
+import com.sashazhenia.vocabulary.model.EnglishWord;
 import com.sashazhenia.vocabulary.model.dto.AddNewWordDto;
 import com.sashazhenia.vocabulary.service.WordService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +21,13 @@ public class WordController {
     private final WordService wordService;
 
     @GetMapping(value = "/api/v1/findAllWords")
-    public List<WordItem> findAllWords() {
+    public List<EnglishWord> findAllWords() {
         return wordService.findAllWords();
     }
 
     @PostMapping(value = "/api/v1/addNewWord")
-    public void addNewWord(@RequestBody AddNewWordDto addNewWordDto) {
-        wordService.addNewWord(addNewWordDto);
+    public void addNewWord(@RequestBody @Valid AddNewWordDto addNewWordDto) {
+        wordService.addNewWordIfNotExists(addNewWordDto);
     }
 
 }

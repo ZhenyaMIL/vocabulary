@@ -33,7 +33,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"englishName\": \"Duck\",\r\n    \"russianWord\": \"Утка\"\r\n}",
+					"raw": "{\r\n    \"englishWord\": \"table\",\r\n    \"cyrillicWord\": \"стіл\",\r\n    \"language\": \"UA\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

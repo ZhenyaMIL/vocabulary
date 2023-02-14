@@ -4,9 +4,11 @@ import lombok.Getter;
 
 public enum WordStatus {
 
-    IN_PROGRESS("In progress"),
+    DIFFICULT("DIFFICULT"),
 
-    CREATED("Created");
+    NEW("NEW"),
+
+    OTHER("OTHER");
 
     @Getter
     private String value;
