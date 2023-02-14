@@ -2,10 +2,12 @@ package com.sashazhenia.vocabulary.service;
 
 import com.sashazhenia.vocabulary.exception.CyrillicSymbolsInEnglishWordException;
 import com.sashazhenia.vocabulary.exception.CyrillicWordAlreadyExistsException;
+import com.sashazhenia.vocabulary.exception.EnglishWordHaveNotFound;
 import com.sashazhenia.vocabulary.model.CyrillicWord;
 import com.sashazhenia.vocabulary.model.EnglishWord;
 import com.sashazhenia.vocabulary.model.WordStatus;
 import com.sashazhenia.vocabulary.model.dto.AddNewWordDto;
+import com.sashazhenia.vocabulary.model.dto.DeleteWordsDto;
 import com.sashazhenia.vocabulary.repository.CyrillicWordRepository;
 import com.sashazhenia.vocabulary.repository.EnglishWordRepository;
 import lombok.AllArgsConstructor;
@@ -30,7 +32,7 @@ public class WordService {
         return englishWordRepository.findAll();
     }
 
-    public void addNewWordIfNotExists(AddNewWordDto addNewWordDto) {
+    public EnglishWord addNewWordIfNotExists(AddNewWordDto addNewWordDto) {
         String englishWord = addNewWordDto.englishWord();
 
         if (Pattern.matches(CYRILLIC_CHECK_REGEXP, englishWord)) {
@@ -42,11 +44,27 @@ public class WordService {
         if (existedEnglishWord != null) {
             List<CyrillicWord> existedCyrillicWords = existedEnglishWord.getCyrillicWords();
             existedCyrillicWords.add(createNewCyrillicWord(addNewWordDto));
-            englishWordRepository.save(existedEnglishWord);
+            return englishWordRepository.save(existedEnglishWord);
 
-        } else {
-            createAndInsertNewEnglishWord(addNewWordDto);
         }
+
+        return createAndInsertNewEnglishWord(addNewWordDto);
+    }
+
+    public void deleteWords(DeleteWordsDto deleteWordsDto) {
+        deleteWordsDto.ids().forEach(englishWordId -> {
+            EnglishWord englishWord = englishWordRepository
+                    .findById(englishWordId)
+                    .orElseThrow(() -> new EnglishWordHaveNotFound(englishWordId));
+
+            List<CyrillicWord> cyrillicWords = englishWord.getCyrillicWords();
+
+            if (!cyrillicWords.isEmpty()) {
+                cyrillicWordRepository.deleteAll(cyrillicWords);
+            }
+
+            englishWordRepository.delete(englishWord);
+        });
     }
 
     private CyrillicWord createNewCyrillicWord(AddNewWordDto addNewWordDto) {
@@ -64,7 +82,7 @@ public class WordService {
         return cyrillicWordRepository.insert(cyrillicWord);
     }
 
-    private void createAndInsertNewEnglishWord(AddNewWordDto addNewWordDto) {
+    private EnglishWord createAndInsertNewEnglishWord(AddNewWordDto addNewWordDto) {
         List<CyrillicWord> cyrillicWords = new ArrayList<>();
         cyrillicWords.add(createNewCyrillicWord(addNewWordDto));
 
@@ -78,7 +96,7 @@ public class WordService {
                 .rightAnswersCount(0)
                 .build();
 
-        englishWordRepository.insert(newEnglishWord);
+        return englishWordRepository.insert(newEnglishWord);
     }
 
 }
