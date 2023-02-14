@@ -45,20 +45,7 @@ public class WordService {
             englishWordRepository.save(existedEnglishWord);
 
         } else {
-            List<CyrillicWord> cyrillicWords = new ArrayList<>();
-            cyrillicWords.add(createNewCyrillicWord(addNewWordDto));
-
-            EnglishWord newEnglishWord = EnglishWord.builder()
-                    .cyrillicWords(cyrillicWords)
-                    .englishWord(addNewWordDto.englishWord())
-                    .status(WordStatus.NEW)
-                    .created(LocalDateTime.now())
-                    .lastUpdate(LocalDateTime.now())
-                    .timesWordAppeared(0)
-                    .rightAnswersCount(0)
-                    .build();
-
-            englishWordRepository.insert(newEnglishWord);
+            createAndInsertNewEnglishWord(addNewWordDto);
         }
     }
 
@@ -75,6 +62,23 @@ public class WordService {
                 .build();
 
         return cyrillicWordRepository.insert(cyrillicWord);
+    }
+
+    private void createAndInsertNewEnglishWord(AddNewWordDto addNewWordDto) {
+        List<CyrillicWord> cyrillicWords = new ArrayList<>();
+        cyrillicWords.add(createNewCyrillicWord(addNewWordDto));
+
+        EnglishWord newEnglishWord = EnglishWord.builder()
+                .cyrillicWords(cyrillicWords)
+                .englishWord(addNewWordDto.englishWord())
+                .status(WordStatus.NEW)
+                .created(LocalDateTime.now())
+                .lastUpdate(LocalDateTime.now())
+                .timesWordAppeared(0)
+                .rightAnswersCount(0)
+                .build();
+
+        englishWordRepository.insert(newEnglishWord);
     }
 
 }

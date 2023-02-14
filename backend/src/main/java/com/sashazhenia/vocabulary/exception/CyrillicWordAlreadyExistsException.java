@@ -7,4 +7,5 @@ public class CyrillicWordAlreadyExistsException extends RuntimeException {
     public CyrillicWordAlreadyExistsException(String englishWord) {
         super(String.format(EXCEPTION_TEXT, englishWord));
     }
+
 }
