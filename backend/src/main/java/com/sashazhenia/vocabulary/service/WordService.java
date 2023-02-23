@@ -8,6 +8,7 @@ import com.sashazhenia.vocabulary.model.EnglishWord;
 import com.sashazhenia.vocabulary.model.WordStatus;
 import com.sashazhenia.vocabulary.model.dto.AddNewWordDto;
 import com.sashazhenia.vocabulary.model.dto.DeleteWordsDto;
+import com.sashazhenia.vocabulary.model.dto.UpdateWordDto;
 import com.sashazhenia.vocabulary.repository.CyrillicWordRepository;
 import com.sashazhenia.vocabulary.repository.EnglishWordRepository;
 import lombok.AllArgsConstructor;
@@ -65,6 +66,25 @@ public class WordService {
 
             englishWordRepository.delete(englishWord);
         });
+    }
+
+    public void updateWord(UpdateWordDto updateWordDto) {
+        String englishWordId = updateWordDto.id();
+        EnglishWord englishWord = englishWordRepository
+                .findById(englishWordId)
+                .orElseThrow(() -> new EnglishWordHaveNotFound(englishWordId));
+
+        englishWord.setRightAnswersCount(updateWordDto.rightAnswersCount());
+
+        if (updateWordDto.timesWordAppeared() != null) {
+            englishWord.setTimesWordAppeared(updateWordDto.timesWordAppeared());
+        } else {
+            Integer timesWordAppeared = englishWord.getTimesWordAppeared() + 1;
+            englishWord.setTimesWordAppeared(timesWordAppeared);
+        }
+
+        englishWord.setLastUpdate(LocalDateTime.now());
+        englishWordRepository.save(englishWord);
     }
 
     private CyrillicWord createNewCyrillicWord(AddNewWordDto addNewWordDto) {

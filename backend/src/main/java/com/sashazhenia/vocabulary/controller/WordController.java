@@ -3,6 +3,7 @@ package com.sashazhenia.vocabulary.controller;
 import com.sashazhenia.vocabulary.model.EnglishWord;
 import com.sashazhenia.vocabulary.model.dto.AddNewWordDto;
 import com.sashazhenia.vocabulary.model.dto.DeleteWordsDto;
+import com.sashazhenia.vocabulary.model.dto.UpdateWordDto;
 import com.sashazhenia.vocabulary.service.WordService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,6 +42,11 @@ public class WordController {
     @DeleteMapping(value = "/api/v1/deleteWords")
     public void deleteWords(@RequestBody @Valid DeleteWordsDto deleteWordsDto) {
         wordService.deleteWords(deleteWordsDto);
+    }
+
+    @PatchMapping(value = "/api/v1/updateWord")
+    public void updateWord(@RequestBody @Valid UpdateWordDto updateWordDto) {
+        wordService.updateWord(updateWordDto);
     }
 
 }
