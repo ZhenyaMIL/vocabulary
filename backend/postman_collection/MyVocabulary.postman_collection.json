@@ -54,6 +54,64 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Delete words",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ids\":[\"63ea8fbd7956ed647f3dcc7c\",\"63eabc91dba7465dce95a971\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/deleteWords",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"deleteWords"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Word",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"63e96e4050e3b5e8bcebd260\",\n    \"rightAnswersCount\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/updateWord",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"updateWord"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
