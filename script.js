@@ -1,7 +1,9 @@
 
 const addNewWord = document.querySelector(".vocabulary__add-new-word");
 const trainingStart = document.querySelector(".training__start");
-
+const dropdownTrigger = document.querySelector('.dropdown-trigger');
+const dropdownOptions = document.querySelector('.dropdown-options');
+const dropdownOption = document.querySelectorAll('.dropdown-option');
 const allTabs = document.querySelectorAll('.wrapper-tabs__tab');
 const vocabularyBlock = document.querySelector('.vocabulary');
 const trainingBlock = document.querySelector('.training');
@@ -15,6 +17,7 @@ const nativehWordInput = document.querySelector('.native_word');
 const buttonOne = document.querySelectorAll('.button-primary');
 let removeButtons = document.querySelectorAll('.removeFromVocabulary');
 let allVocabularyWords;
+let progressLine = document.querySelector('.training__new-words #progressbar .progress-line');
 let svg = `<svg class='voice-acting' xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="612px" height="612px" viewBox="0 0 612 612" style="enable-background:new 0 0 612 612;" xml:space="preserve"><g><g><path d="M574.47,190.063c-24.899-34.021-58.128-57.798-99.601-70.496c-10.086-3.09-21.556,2.761-24.548,12.974    c-2.971,10.13,2.806,21.062,12.974,24.204c32.966,10.183,59.534,28.821,79.616,56.467c19.909,27.415,30.16,58.218,30.16,92.935    c0,34.372-10.168,65.235-30.16,92.591c-19.992,27.354-46.65,45.932-79.616,56.115c-10.176,3.143-16.026,14.447-12.974,24.547    c2.565,8.5,10.168,13.678,18.585,13.678c3.157,0,4.9-0.367,5.963-0.695c41.384-12.996,74.783-36.416,99.602-70.496    C599.453,387.574,612,348.938,612,306.147C612,263.014,599.37,224.084,574.47,190.063z"/><path d="M495.558,362.973c12.36-17.125,18.585-36.123,18.585-56.818c0-21.391-6.397-40.268-18.585-57.162    c-12.36-17.126-28.709-28.903-48.753-35.427c-10.124-3.292-20.695,2.11-24.549,12.278c-2.806,10.168,2.199,20.718,12.974,24.197    c23.958,7.744,40.336,30.512,40.336,56.115c0,25.252-16.423,47.527-40.336,55.412c-10.115,3.338-16.026,14.104-12.974,24.205    c2.566,8.492,10.168,13.678,18.585,13.678c2.103,0,4.205-0.354,5.964-1.408C466.804,391.375,483.369,379.859,495.558,362.973z"/><path d="M389.298,55.387c-7.715-3.157-14.516-1.848-20.695,3.157L207.626,189.016H19.289C8.417,189.016,0,197.785,0,208.657    v194.652c0,10.871,8.417,19.289,19.289,19.289h188.338l160.976,131.533c3.479,2.844,7.362,4.191,11.926,4.191    c3.157,0,5.903-0.824,8.77-2.096c7.31-3.291,10.871-9.129,10.871-17.209V73.636C400.169,65.563,396.66,59.248,389.298,55.387z     M361.24,497.994l-134.325-109.77c-3.861-3.156-7.714-4.557-12.278-4.557H38.929V227.945h175.708    c4.557,0,8.799-1.362,12.278-4.205L361.24,113.605V497.994z"/></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>`;
 
 
@@ -116,18 +119,9 @@ addNewWord.addEventListener('click', () => {
   let englishWord = englishWordInput.value;
   let nativeWord = nativehWordInput.value;
   let templateNewWord = `<div class="new-word">${svg}<p class="english">${englishWord}</p><p class="native">${nativeWord}</p><button onClick="deleteWord(this)" class='button-primary removeFromVocabulary' type="submit">Remove</button></div>`;
-  let ifFieldsAreFilled = englishWord && nativeWord ? true: false;
-  let ifThisWordIsUnique = !wordsList().includes(englishWord);
+  let validation = inputsValidation(englishWord, nativeWord);
 
-  if(ifFieldsAreFilled === false) {
-    displayTrouble("All fields must be filled");
-  }
-
-  if(ifThisWordIsUnique === false) {
-    displayTrouble("You have added this word already");
-  }
-
-  if(ifFieldsAreFilled && ifThisWordIsUnique) {
+  if(validation) {
     let lastUpdate = new Date();
     let status = 'new word';
     let wordDetail = getwordDetail(englishWord);
@@ -147,6 +141,32 @@ addNewWord.addEventListener('click', () => {
     vocabulary.innerHTML += templateNewWord;
   }
 });
+
+function inputsValidation(englishWord, nativeWord) {
+  let ifFieldsAreFilled = englishWord && nativeWord ? true: false;
+  let ifThisWordIsUnique = !wordsList().includes(englishWord);
+  let ifEnglishWordLatin = containsOnlyLatin(englishWord);
+  let ifNativeWordCyrillic = containsOnlyCyrillic(nativeWord);
+
+  if (ifFieldsAreFilled === false) {
+    displayTrouble("All fields must be filled");
+    return false;
+  } else if (ifThisWordIsUnique === false) {
+    displayTrouble("You have added this word already");
+    return false;
+  } else if (ifEnglishWordLatin === false) {
+    displayTrouble("The english word must contain only the latin alphabet");
+    return false;
+  } else if (ifNativeWordCyrillic === false) {
+    displayTrouble("The translation field must contain only cyrillic alphabet");
+    return false;
+  }
+
+  englishWordInput.value = '';
+  nativehWordInput.value = '';
+
+  return true;
+}
 
 function deleteWord(button) {
   let word = button.parentElement;
@@ -180,12 +200,19 @@ function deleteWord(button) {
   })
  });
 
-trainingStart.addEventListener('click', function(){
-  this.classList.add('hide');
+ 
 
+trainingStart.addEventListener('click', function(){
+  let numberWordsForTraining = +document.querySelector('.training .training-options .dropdown-trigger input').value;
+  let stepPercent = Math.floor(100 / numberWordsForTraining)
   let wordsForTraining = createListOfPriorityWords();
   let minValue = 6;
   let maxIndex = wordsForTraining.length;
+
+
+
+  progressLine.setAttribute("data-step", stepPercent);
+  this.classList.add('hide');
 
   if(allVocabularyWords > minValue) {
     let trainingBlock = document.querySelector('.training__new-words');
@@ -210,7 +237,7 @@ trainingStart.addEventListener('click', function(){
         let wordIndex = document.querySelector(`.word-index-${index} .training__translate-wrapper`);
         let translateRandowWord = localStorage.getItem(randomsWord);
 
-        wordIndex.innerHTML += `<div class="training__choose-translate button-primary">${translateRandowWord}</div>`;
+        wordIndex.innerHTML += `<div onclick="increaseProgress(${stepPercent})" class="training__choose-translate button-primary">${translateRandowWord}</div>`;
       });
     });
 
@@ -221,6 +248,36 @@ trainingStart.addEventListener('click', function(){
   }
 
 })
+
+//PROGRESS BAR
+// update the progress bar with a given percentage
+function increaseProgress(percentage) {
+  progressLine.style.width = `${percentage}%`;
+  console.log(`${percentage}%`)
+}
+
+//Dropdown trigger
+dropdownTrigger.addEventListener('click', function() {
+  this.classList.add('active');
+  dropdownOptions.style.maxHeight = dropdownOptions.scrollHeight + 'px';
+});
+
+dropdownOption.forEach(function(option) {
+  option.addEventListener('click', function() {
+    dropdownTrigger.classList.remove('active');
+    dropdownTrigger.querySelector('input').value = this.textContent;
+    dropdownOptions.style.maxHeight = null;
+  });
+});
+
+document.addEventListener('click', function(e) {
+  if (!dropdownTrigger.contains(e.target)) {
+    dropdownOptions.style.maxHeight = null;
+    dropdownTrigger.classList.remove('active');
+  }
+});
+
+increaseProgress(20)
 
 // ----FUNCTION HELPERS----
 function wordsList() {
@@ -237,8 +294,6 @@ function wordsList() {
 
   return list;
 }
-
-
 
 function checkIfTranslateCorrect(maxIndex) {
   let optionsOfTranslate = document.querySelectorAll('.training__translate-wrapper .training__choose-translate');
@@ -466,5 +521,15 @@ function addClickEvents() {
       variant.classList.add('active');
     })
   });
+}
+
+function containsOnlyCyrillic(input) {
+  var cyrillicPattern = /^[\u0400-\u04FF\s]+$/;
+  return cyrillicPattern.test(input);
+}
+
+function containsOnlyLatin(input) {
+  var latinPattern = /^[a-zA-Z\s]+$/;
+  return latinPattern.test(input);
 }
 // ----FUNCTION HELPERS----
