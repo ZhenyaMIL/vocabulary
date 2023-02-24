@@ -39,10 +39,25 @@
           <li>Difficult words</li>
           <li>Words in order from oldest interactions to most recent</li>
         </ol>
-        <button class='training__start button-primary'>Start</button>
       </div>
+      <div class="training-options">
+        <p>Words for studying:</p>
+        <div class="custom-dropdown">
+          <div class="dropdown-trigger">
+            <input readonly type="text" value="10">
+          </div>
+          <div class="dropdown-options">
+            <div class="active dropdown-option">10</div>
+            <div class="dropdown-option">20</div>
+            <div class="dropdown-option">50</div>
+          </div>
+        </div>
+      </div>
+      <button class='training__start button-primary'>Start</button>
       <div class="training__new-words">
-
+        <div id="progressbar">
+          <div class="progress-line" style="width: 0%;"></div>
+        </div>
       </div>
     </div>
     <div class="vocabulary active">
@@ -58,18 +73,25 @@
         <button class='vocabulary__add-new-word button-primary' type="submit">Add</button>
         <button class='clear-local-storage button-primary'>Clear Local Storage</button>
         <button class='add-several-words button-primary'>Add Five Words</button>
+        <div class="display-options">
+          <p>Displaying words:</p>
+          <div class="custom-dropdown">
+            <div class="dropdown-trigger">
+              <input readonly type="text" value="50">
+            </div>
+            <div class="dropdown-options">
+              <div class="active dropdown-option">50</div>
+              <div class="dropdown-option">100</div>
+              <div class="dropdown-option">200</div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="vocabulary__all-words">
       </div>
     </div>
   </main>
-
   <script src="./script.js"></script>
   <script src="./robot-voice.js"></script>
 </body>
-
-
-
-
-
 </html>
